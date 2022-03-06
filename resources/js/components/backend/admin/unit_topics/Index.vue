@@ -7,22 +7,24 @@
     :deleteItem="deleteItem"
   ></TableContent>
 </template>
+
 <script>
 import useGet from "../../../../src/composable/use-get";
+
 export default {
   setup(props, context) {
     let { getDataList, showEditForm, deleteItem, state } = useGet(context);
 
-    state.generalApi = "course";
-    state.cardTitle = "Course";
+    state.generalApi = "unit-topics";
+    state.cardTitle = "unit-topics";
 
     getDataList();
 
     state.table = {
-      Title: "title",
-      Code: "code",
-      Category: "course_category_name",
       Thumbnail: "thumbnail_view",
+      Title: "title",
+      Type: "type",
+      "Created At": "created_at",
     };
 
     return {

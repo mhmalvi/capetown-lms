@@ -26,13 +26,18 @@ class CreateUserSubmissionsTable extends Migration
                 ->onUpdate('cascade');
             $table->foreign('topic_id')
                 ->references('id')
-                ->on('topics')
+                ->on('unit_topics')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
             $table->string('assessment');
             $table->enum('status', ['pending', 'approved', 'rejected'])
                 ->default('pending');
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
+            $table->softDeletes('deleted_at')->nullable();
 
             $table->timestamps();
         });

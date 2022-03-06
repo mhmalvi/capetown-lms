@@ -1,92 +1,116 @@
 <template>
- <div class="container-fluid">
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="card">
-        <div class="card-header">
-          <h5>Create Course</h5>  
-        </div>
-        <div class="card-body">
-          <form class="needs-validation form" novalidate="" @submit.prevent="processData()">
-            <div class="form-row">
-              <div class="col-md-6 mb-3">
-                <label for="validationCustom02">Title</label>     
-                <input class="form-control" type="text" name="title" v-model="state.inputData.title" placeholder="e.g. Jone Doe" required="">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-header">
+            <h5>Create Course</h5>
+          </div>
+          <div class="card-body">
+            <form
+              class="needs-validation form"
+              novalidate=""
+              @submit.prevent="processData()"
+            >
+              <div class="form-row">
+                <div class="col-md-6 mb-3">
+                  <label for="validationCustom02">Title</label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="title"
+                    v-model="state.inputData.title"
+                    placeholder="e.g. Jone Doe"
+                    required=""
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="validationCustom02">Course Category </label>
+                  <select
+                    class="form-control"
+                    name="course_category_id"
+                    v-model="state.inputData.course_category_id"
+                    id=""
+                  >
+                    <option :value="selected" selected>Select Category</option>
+                    <option
+                      v-for="(category, index) in categories"
+                      :value="category.id"
+                      :key="index"
+                    >
+                      {{ category.name }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="validationCustom02">Thumbnail</label>
+                  <input
+                    class="form-control"
+                    type="file"
+                    name="thumbnail"
+                    placeholder=""
+                  />
+                </div>
               </div>
-              <div class="col-md-6 mb-3">
-               
-                <label for="validationCustom02">Course Unit </label>     
-                <select class="form-control" name="course_unit" v-model="state.inputData.course_unit" id="">
-                  <option :value="selected" selected>Select Course Unit</option>
-                  <option  v-for="(unit, index) in course_units" :value="unit.unit_status" :key="index">{{ unit.name }}</option>
-                </select>
+              <div class="form-row">
+                <div class="col-md-12 mb-3">
+                  <label for="validationCustom02">Description</label>
+                  <textarea
+                    class="form-control"
+                    type="text"
+                    name="description"
+                    v-model="state.inputData.description"
+                    placeholder="Write about you..."
+                  ></textarea>
+                </div>
               </div>
-              <div class="col-md-6 mb-3">
-               
-                <label for="validationCustom02">Course Category </label>     
-                <select class="form-control" name="course_category_id" v-model="state.inputData.course_category_id" id="">
-                  <option :value="selected" selected>Select Category</option>
-                  <option  v-for="(category, index) in categories" :value="category.id" :key="index">{{ category.name }}</option>
-                </select>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label for="validationCustom02">Thumbnail</label> 
-                <input class="form-control" type="file" name="thumbnail" placeholder="">
-              </div>
-             </div>
-             <div class="form-row">
-              <div class="col-md-12 mb-3">
-                <label for="validationCustom02">Description</label> 
-                <textarea class="form-control" type="text" name="description" v-model="state.inputData.description" placeholder="Write about you..."></textarea>
-              </div>
-            </div>
-            <!-- <button class="btn btn-primary" type="submit">Submit form</button> -->
-            <FormButton :isEdit="state.isEdit" :backUrl="state.backUrl"></FormButton>
-          </form>
+              <!-- <button class="btn btn-primary" type="submit">Submit form</button> -->
+              <FormButton
+                :isEdit="state.isEdit"
+                :backUrl="state.backUrl"
+              ></FormButton>
+            </form>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
-import { computed, reactive, ref } from '@vue/reactivity'
-import useCreate from '../../../../src/composable/use-create'
+import { computed, reactive, ref } from "@vue/reactivity";
+import useCreate from "../../../../src/composable/use-create";
 
 export default {
-   setup(){
-     let {processData, editForm, state} = useCreate()
- 
-    state.generalApi = 'course'
-    state.backUrl = '/course'
-    state.isFile = true
-    let categories = ref([])
-    let selected = reactive('')
+  setup() {
+    let { processData, editForm, state } = useCreate();
+
+    state.generalApi = "course";
+    state.backUrl = "/course";
+    state.isFile = true;
+    let categories = ref([]);
+    let selected = reactive("");
 
     let courseCategories = (() => {
-       axios.get(state.base_url+'/api/course-category')
-       .then(response => {
-         categories.value = response.data.data
-         
-       })
-    })()
+      axios.get(state.base_url + "/api/course-category").then((response) => {
+        categories.value = response.data.data;
+      });
+    })();
 
     let course_units = [
-      {name:'Core Unit', unit_status:1},
-      {name:'Elective Unit', unit_status:2},
-    ]
-    
-    return{
+      { name: "Core Unit", unit_status: 1 },
+      { name: "Elective Unit", unit_status: 2 },
+    ];
+
+    return {
       course_units,
       processData,
       editForm,
       state,
       courseCategories,
       categories,
-      selected
-    }
-   }
-   
-}
+      selected,
+    };
+  },
+};
 </script>

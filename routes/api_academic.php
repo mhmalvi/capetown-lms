@@ -14,14 +14,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['namespace' => 'API\Backend\Academic', 'middleware' => 'auth:sanctum'], function(){
+Route::group(['namespace' => 'API\Backend\Academic', 'middleware' => 'auth:sanctum'], function () {
 
-  Route::apiResources([
-    
-    'course-category' => 'CourseCategoryController',
-    'course'          => 'CourseController',
-    'class-room'      => 'ClassRoomController',
+    Route::apiResources([
 
-  ]);
+        'course-category' => 'CourseCategoryController',
+        'course'          => 'CourseController',
+        'class-room'      => 'ClassRoomController',
+        'course-units'    => 'CourseUnitController',
 
+    ]);
+
+    Route::get('course-units/{subject}/topics', 'UnitTopicController@get');
+    Route::post('course-units/{subject}/topics', 'UnitTopicController@store');
 });

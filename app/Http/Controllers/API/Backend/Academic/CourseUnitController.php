@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers\API\Backend\Academic;
 
-use App\Uploads\FileUpload;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Models\Academic\Course;
-use App\SearchEngine\DataMachine;
-use App\CrudMachanism\DataShowing;
 use App\CrudMachanism\DataDeletion;
 use App\CrudMachanism\DataInsertion;
+use App\CrudMachanism\DataShowing;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Academic\CourseRequest;
-use App\Http\Resources\Academic\CourseResource;
+use App\Http\Requests\Academic\SubjectRequest;
+use App\Http\Resources\Academic\SubjectResource;
+use App\Models\Academic\Subject;
+use App\SearchEngine\DataMachine;
+use App\Uploads\FileUpload;
+use Illuminate\Http\Request;
 
-class CourseController extends Controller
+class CourseUnitController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,14 +24,14 @@ class CourseController extends Controller
     {
         $searchable = ['title'];
         $extraData = [];
-        $result = new DataMachine($searchable, $request, Course::class, CourseResource::class, $extraData);
+        $result = new DataMachine($searchable, $request, Subject::class, SubjectResource::class, $extraData);
         return  $result->dataRendering();
     }
 
     public function getRawList()
     {
         try {
-            return CourseResource::collection(Course::all());
+            return SubjectResource::collection(Subject::all());
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => "Something went wrong while fetching courses"
@@ -42,17 +41,15 @@ class CourseController extends Controller
 
     public function storeUpdate($request, $id, $method)
     {
-
-        $options           = FileUpload::setOptions($id, Course::class, $method, 'thumbnail', 'storage/course');
+        $options           = FileUpload::setOptions($id, Subject::class, $method, 'thumbnail', 'storage/course_units');
         $file              = new FileUpload($request, $options);
         $fileName          = $file->imgProcess();
 
-        $data              = $request->except(['thumbnail']);
-        $data['slug']      = strtolower(str_replace(' ', '_', $request->title));
+        // $data              = $request->except(['thumbnail']);
+        $data              = $request->all();
         $data['thumbnail'] = $fileName;
-        $data['code'] = uniqid(rand(1, 9999));
-        $data['uuid'] = Str::uuid();
-        $operation         = new DataInsertion(Course::class, $method, 'Course', $data, $id);
+
+        $operation         = new DataInsertion(Subject::class, $method, 'Subject', $data, $id);
         $result            = $operation->crudItem();
         return $result;
     }
@@ -63,7 +60,7 @@ class CourseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CourseRequest $request)
+    public function store(SubjectRequest $request)
     {
         $result =  $this->storeUpdate($request, '', 'store');
         return $result;
@@ -77,7 +74,7 @@ class CourseController extends Controller
      */
     public function show($id)
     {
-        return DataShowing::dataShow(Course::class, $id, CourseResource::class);
+        return DataShowing::dataShow(Subject::class, $id, SubjectResource::class);
     }
 
     /**
@@ -101,7 +98,7 @@ class CourseController extends Controller
      */
     public function destroy($id)
     {
-        $result =  DataDeletion::dataDelete(Course::class, $id, 'Course');
+        $result =  DataDeletion::dataDelete(Subject::class, $id, 'Subject');
         return $result;
     }
 }

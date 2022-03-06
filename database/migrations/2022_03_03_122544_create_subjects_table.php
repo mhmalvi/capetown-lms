@@ -23,9 +23,14 @@ class CreateSubjectsTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->string('title');
-            $table->longText('description');
-            $table->string('thumbnail');
-            $table->enum('type', ['core', 'elective']);
+            $table->longText('description')->nullable();
+            $table->text('thumbnail')->nullable();
+            $table->enum('type', ['core', 'elective'])->default('core');
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
+            $table->softDeletes('deleted_at')->nullable();
 
             $table->timestamps();
         });

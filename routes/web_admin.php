@@ -13,9 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['namespace' => 'Backend\Admin'], function(){
+Route::group(['namespace' => 'Backend\Admin'], function () {
 
     Route::get('/admin', 'HomeController@index');
-    Route::get('/admin/{path}', 'HomeController@index')->where('path','([A-z\d\-\/_.]+)?');
-  
+
+    // this was added because without route['login'], application used to throw error
+    Route::get('/admin/login', 'HomeController@index')->name('login');
+
+    Route::get('/admin/{path}', 'HomeController@index')->where('path', '([A-z\d\-\/_.]+)?');
 });
