@@ -42,6 +42,7 @@
                 <router-link
                   :to="getUnitViewLink(unit)"
                   class="btn-link text-primary"
+                  v-if="state.completed_units.length + 1 > index"
                   >View</router-link
                 >
               </td>
@@ -70,15 +71,17 @@ import useCourse from "../../../../src/composable/useCourse";
 export default {
   setup() {
     const route = useRoute();
-    const { getWithUnits } = useCourse();
+    const { getWithUnits, getCompletedUnits } = useCourse();
 
     const state = reactive({
       course_id: route.params.id,
       course: null,
+      completed_units: [],
     });
 
     onMounted(() => {
       getCourse();
+      getUnitsStatus();
     });
 
     const coreUnits = computed(() => {
@@ -96,6 +99,16 @@ export default {
         })
         .catch((res) => {
           alert(res.response.data.message);
+        });
+    };
+
+    const getUnitsStatus = () => {
+      getCompletedUnits(state.course_id)
+        .then((res) => {
+          state.completed_units = res.data.data;
+        })
+        .catch((err) => {
+          alert(err.response.data.message);
         });
     };
 

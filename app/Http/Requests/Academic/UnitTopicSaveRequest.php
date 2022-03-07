@@ -59,7 +59,7 @@ class UnitTopicSaveRequest extends FormRequest
         ], [
             'description' => $description,
             'attachments' => json_encode($ids),
-            'can_user_submit' => $can_user_submit,
+            'can_user_submit' => $can_user_submit == 1 ? true : false,
         ]);
     }
 

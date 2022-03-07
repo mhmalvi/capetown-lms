@@ -19492,19 +19492,40 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm-bundler.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm-bundler.js");
+/* harmony import */ var _src_composable_useCourse__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../src/composable/useCourse */ "./resources/js/src/composable/useCourse.js");
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   setup: function setup() {
     var image_url = (0,vue__WEBPACK_IMPORTED_MODULE_0__.inject)("image_url");
-    var route = (0,vue_router__WEBPACK_IMPORTED_MODULE_1__.useRoute)();
+    var route = (0,vue_router__WEBPACK_IMPORTED_MODULE_2__.useRoute)();
+    var user = (0,vue__WEBPACK_IMPORTED_MODULE_0__.inject)("user");
+    var isAdmin = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
+      return user.type == "admin";
+    });
+    var isStudent = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
+      return user.type == "student";
+    });
+    var courses = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]);
     var path = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
       return route.path;
     });
+    (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(function () {
+      if (isStudent.value) {
+        (0,_src_composable_useCourse__WEBPACK_IMPORTED_MODULE_1__["default"])().all().then(function (res) {
+          courses.value = res.data.data;
+        });
+      }
+    });
     return {
       image_url: image_url,
-      path: path
+      path: path,
+      user: user,
+      isAdmin: isAdmin,
+      isStudent: isStudent,
+      courses: courses
     };
   }
 });
@@ -19888,8 +19909,38 @@ var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"sidebar-heading\">Instructor</div><ul class=\"sidebar-menu\"><li class=\"sidebar-menu-item\"><a class=\"sidebar-menu-button\" href=\"instructor-dashboard.html\"><span class=\"material-icons sidebar-menu-icon sidebar-menu-icon--left\">school</span><span class=\"sidebar-menu-text\">Instructor Dashboard</span></a></li><li class=\"sidebar-menu-item\"><a class=\"sidebar-menu-button\" href=\"instructor-courses.html\"><span class=\"material-icons sidebar-menu-icon sidebar-menu-icon--left\">import_contacts</span><span class=\"sidebar-menu-text\">Manage Courses</span></a></li><li class=\"sidebar-menu-item\"><a class=\"sidebar-menu-button\" href=\"instructor-quizzes.html\"><span class=\"material-icons sidebar-menu-icon sidebar-menu-icon--left\">help</span><span class=\"sidebar-menu-text\">Manage Quizzes</span></a></li></ul><div class=\"sidebar-heading\">Applications</div><ul class=\"sidebar-menu\"><li class=\"sidebar-menu-item\"><a class=\"sidebar-menu-button js-sidebar-collapse\" data-toggle=\"collapse\" href=\"#enterprise_menu\"><span class=\"material-icons sidebar-menu-icon sidebar-menu-icon--left\">donut_large</span> Enterprise <span class=\"ml-auto sidebar-menu-toggle-icon\"></span></a><ul class=\"sidebar-submenu collapse sm-indent\" id=\"enterprise_menu\"><li class=\"sidebar-menu-item\"><a class=\"sidebar-menu-button\" href=\"employees.html\"><span class=\"sidebar-menu-text\">Employees</span></a></li><li class=\"sidebar-menu-item\"><a class=\"sidebar-menu-button\" href=\"staff.html\"><span class=\"sidebar-menu-text\">Staff</span></a></li></ul></li><li class=\"sidebar-menu-item\"><a class=\"sidebar-menu-button\" data-toggle=\"collapse\" href=\"#ecommerce_menu\"><span class=\"material-icons sidebar-menu-icon sidebar-menu-icon--left\">shopping_cart</span> eCommerce <span class=\"ml-auto sidebar-menu-toggle-icon\"></span></a><ul class=\"sidebar-submenu collapse sm-indent\" id=\"ecommerce_menu\"><li class=\"sidebar-menu-item\"><a class=\"sidebar-menu-button\" href=\"ecommerce.html\"><span class=\"sidebar-menu-text\">Shop Dashboard</span></a></li><li class=\"sidebar-menu-item\"><a class=\"sidebar-menu-button disabled\" href=\"edit-product.html\"><span class=\"sidebar-menu-text\">Edit Product</span></a></li></ul></li></ul>", 4);
+var _hoisted_21 = {
+  key: 4,
+  "class": "sidebar-menu-item"
+};
 
+var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+  "class": "sidebar-menu-button",
+  href: "#"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "class": "material-icons sidebar-menu-icon sidebar-menu-icon--left"
+}, "class"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "class": "sidebar-menu-text"
+}, "Courses")], -1
+/* HOISTED */
+);
+
+var _hoisted_23 = {
+  "class": "sidebar-menu pl-2"
+};
+var _hoisted_24 = {
+  "class": "sidebar-menu-item"
+};
+
+var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "class": "material-icons sidebar-menu-icon sidebar-menu-icon--left"
+}, "class", -1
+/* HOISTED */
+);
+
+var _hoisted_26 = {
+  "class": "sidebar-menu-text"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
 
@@ -19925,7 +19976,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   })], 2
   /* CLASS */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
+  ), $setup.isAdmin ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
+    key: 0,
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-menu-item", {
       active: $setup.path == '/course-category'
     }])
@@ -19941,7 +19993,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   })], 2
   /* CLASS */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.isAdmin ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
+    key: 1,
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-menu-item", {
       active: $setup.path == '/class-room'
     }])
@@ -19957,7 +20010,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   })], 2
   /* CLASS */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.isAdmin ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
+    key: 2,
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-menu-item", {
       active: $setup.path == '/course'
     }])
@@ -19973,7 +20027,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   })], 2
   /* CLASS */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.isAdmin ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
+    key: 3,
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-menu-item", {
       active: $setup.path == '/course-units'
     }])
@@ -19989,7 +20044,31 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   })], 2
   /* CLASS */
-  )]), _hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" // END Sidebar Content ")])])]);
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.isStudent ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_21, [_hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_24, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.courses, function (course, index) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_router_link, {
+      "class": "sidebar-menu-button",
+      to: {
+        name: 'CourseView',
+        params: {
+          id: course.id
+        }
+      },
+      key: index
+    }, {
+      "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+        return [_hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(course.title), 1
+        /* TEXT */
+        )];
+      }),
+      _: 2
+      /* DYNAMIC */
+
+    }, 1032
+    /* PROPS, DYNAMIC_SLOTS */
+    , ["to"]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" // END Sidebar Content ")])])]);
 }
 
 /***/ }),
@@ -20646,6 +20725,45 @@ __webpack_require__.r(__webpack_exports__);
     }
   }
 }));
+
+/***/ }),
+
+/***/ "./resources/js/src/composable/useCourse.js":
+/*!**************************************************!*\
+  !*** ./resources/js/src/composable/useCourse.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function () {
+  var all = function all(per_page, search) {
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().get("course");
+  };
+
+  var getWithUnits = function getWithUnits(id) {
+    var role = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "admin";
+    if (role == "admin") role = "";
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(role + "/course/".concat(id, "/units"));
+  }; // this is for students
+
+
+  var getCompletedUnits = function getCompletedUnits(course_id) {
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().get("student/course/".concat(course_id, "/units/completed"));
+  };
+
+  return {
+    all: all,
+    getWithUnits: getWithUnits,
+    getCompletedUnits: getCompletedUnits
+  };
+});
 
 /***/ }),
 

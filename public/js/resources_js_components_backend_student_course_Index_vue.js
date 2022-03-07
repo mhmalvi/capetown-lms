@@ -166,38 +166,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
 /***/ }),
 
-/***/ "./resources/js/src/composable/useCourse.js":
-/*!**************************************************!*\
-  !*** ./resources/js/src/composable/useCourse.js ***!
-  \**************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function () {
-  var all = function all(per_page, search) {
-    return axios__WEBPACK_IMPORTED_MODULE_0___default().get("course");
-  };
-
-  var getWithUnits = function getWithUnits(id) {
-    var role = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "admin";
-    if (role == "admin") role = "";
-    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(role + "/course/".concat(id, "/units"));
-  };
-
-  return {
-    all: all,
-    getWithUnits: getWithUnits
-  };
-});
-
-/***/ }),
-
 /***/ "./resources/js/components/backend/student/course/Index.vue":
 /*!******************************************************************!*\
   !*** ./resources/js/components/backend/student/course/Index.vue ***!

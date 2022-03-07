@@ -24,6 +24,7 @@ Route::group(['namespace' => 'API\Backend\Auth', 'middleware' => 'api'], functio
 Route::group(['prefix' => 'student', 'namespace' => 'API\Backend\Student', 'middleware' => 'auth:sanctum'], function () {
 
     Route::get('course/{course}/units', 'CourseController@units');
+    Route::get('course/{course}/units/completed', 'CourseController@completed_units');
 
     Route::get('unit/{unit}', 'UnitController@topics');
 });

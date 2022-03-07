@@ -49,6 +49,7 @@
           <li
             class="sidebar-menu-item"
             :class="{ active: path == '/course-category' }"
+            v-if="isAdmin"
           >
             <router-link class="sidebar-menu-button" to="/course-category">
               <span
@@ -61,6 +62,7 @@
           <li
             class="sidebar-menu-item"
             :class="{ active: path == '/class-room' }"
+            v-if="isAdmin"
           >
             <router-link class="sidebar-menu-button" to="/class-room">
               <span
@@ -70,7 +72,11 @@
               <span class="sidebar-menu-text">Class Room</span>
             </router-link>
           </li>
-          <li class="sidebar-menu-item" :class="{ active: path == '/course' }">
+          <li
+            class="sidebar-menu-item"
+            :class="{ active: path == '/course' }"
+            v-if="isAdmin"
+          >
             <router-link class="sidebar-menu-button" to="/course">
               <span
                 class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
@@ -82,6 +88,7 @@
           <li
             class="sidebar-menu-item"
             :class="{ active: path == '/course-units' }"
+            v-if="isAdmin"
           >
             <router-link class="sidebar-menu-button" to="/course-units">
               <span
@@ -91,115 +98,83 @@
               <span class="sidebar-menu-text">Course Units</span>
             </router-link>
           </li>
-        </ul>
-        <div class="sidebar-heading">Instructor</div>
-        <ul class="sidebar-menu">
-          <li class="sidebar-menu-item">
-            <a class="sidebar-menu-button" href="instructor-dashboard.html">
+
+          <li class="sidebar-menu-item" v-if="isStudent">
+            <a class="sidebar-menu-button" href="#">
               <span
                 class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
-                >school</span
+                >class</span
               >
-              <span class="sidebar-menu-text">Instructor Dashboard</span>
+              <span class="sidebar-menu-text">Courses</span>
             </a>
-          </li>
-          <li class="sidebar-menu-item">
-            <a class="sidebar-menu-button" href="instructor-courses.html">
-              <span
-                class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
-                >import_contacts</span
-              >
-              <span class="sidebar-menu-text">Manage Courses</span>
-            </a>
-          </li>
-          <li class="sidebar-menu-item">
-            <a class="sidebar-menu-button" href="instructor-quizzes.html">
-              <span
-                class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
-                >help</span
-              >
-              <span class="sidebar-menu-text">Manage Quizzes</span>
-            </a>
+            <ul class="sidebar-menu pl-2">
+              <li class="sidebar-menu-item">
+                <router-link
+                  class="sidebar-menu-button"
+                  :to="{
+                    name: 'CourseView',
+                    params: {
+                      id: course.id,
+                    },
+                  }"
+                  v-for="(course, index) in courses"
+                  :key="index"
+                >
+                  <span
+                    class="
+                      material-icons
+                      sidebar-menu-icon sidebar-menu-icon--left
+                    "
+                    >class</span
+                  >
+                  <span class="sidebar-menu-text">{{ course.title }}</span>
+                </router-link>
+              </li>
+            </ul>
           </li>
         </ul>
 
-        <div class="sidebar-heading">Applications</div>
-        <ul class="sidebar-menu">
-          <li class="sidebar-menu-item">
-            <a
-              class="sidebar-menu-button js-sidebar-collapse"
-              data-toggle="collapse"
-              href="#enterprise_menu"
-            >
-              <span
-                class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
-                >donut_large</span
-              >
-              Enterprise
-              <span class="ml-auto sidebar-menu-toggle-icon"></span>
-            </a>
-            <ul class="sidebar-submenu collapse sm-indent" id="enterprise_menu">
-              <li class="sidebar-menu-item">
-                <a class="sidebar-menu-button" href="employees.html">
-                  <span class="sidebar-menu-text">Employees</span>
-                </a>
-              </li>
-              <li class="sidebar-menu-item">
-                <a class="sidebar-menu-button" href="staff.html">
-                  <span class="sidebar-menu-text">Staff</span>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="sidebar-menu-item">
-            <a
-              class="sidebar-menu-button"
-              data-toggle="collapse"
-              href="#ecommerce_menu"
-            >
-              <span
-                class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
-                >shopping_cart</span
-              >
-              eCommerce
-              <span class="ml-auto sidebar-menu-toggle-icon"></span>
-            </a>
-            <ul class="sidebar-submenu collapse sm-indent" id="ecommerce_menu">
-              <li class="sidebar-menu-item">
-                <a class="sidebar-menu-button" href="ecommerce.html">
-                  <span class="sidebar-menu-text">Shop Dashboard</span>
-                </a>
-              </li>
-              <li class="sidebar-menu-item">
-                <a
-                  class="sidebar-menu-button disabled"
-                  href="edit-product.html"
-                >
-                  <span class="sidebar-menu-text">Edit Product</span>
-                </a>
-              </li>
-            </ul>
-          </li>
-        </ul>
         <!-- // END Sidebar Content -->
       </div>
     </div>
   </div>
 </template>
 <script>
-import { inject, computed } from "vue";
+import { inject, ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import useCourse from "../../../src/composable/useCourse";
+
 export default {
   setup() {
     let image_url = inject("image_url");
 
     let route = useRoute();
+    const user = inject("user");
+
+    const isAdmin = computed(() => user.type == "admin");
+    const isStudent = computed(() => user.type == "student");
+
+    const courses = ref([]);
 
     const path = computed(() => route.path);
+
+    onMounted(() => {
+      if (isStudent.value) {
+        useCourse()
+          .all()
+          .then((res) => {
+            courses.value = res.data.data;
+          });
+      }
+    });
 
     return {
       image_url,
       path,
+      user,
+      isAdmin,
+      isStudent,
+      courses,
     };
   },
 };

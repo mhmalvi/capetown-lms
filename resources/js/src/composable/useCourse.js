@@ -10,8 +10,14 @@ export default () => {
     return axios.get(role + `/course/${id}/units`);
   };
 
+  // this is for students
+  const getCompletedUnits = (course_id) => {
+    return axios.get(`student/course/${course_id}/units/completed`);
+  };
+
   return {
     all,
     getWithUnits,
+    getCompletedUnits,
   };
 };

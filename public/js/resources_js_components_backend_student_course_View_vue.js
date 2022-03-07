@@ -22,14 +22,17 @@ __webpack_require__.r(__webpack_exports__);
     var route = (0,vue_router__WEBPACK_IMPORTED_MODULE_2__.useRoute)();
 
     var _useCourse = (0,_src_composable_useCourse__WEBPACK_IMPORTED_MODULE_1__["default"])(),
-        getWithUnits = _useCourse.getWithUnits;
+        getWithUnits = _useCourse.getWithUnits,
+        getCompletedUnits = _useCourse.getCompletedUnits;
 
     var state = (0,vue__WEBPACK_IMPORTED_MODULE_0__.reactive)({
       course_id: route.params.id,
-      course: null
+      course: null,
+      completed_units: []
     });
     (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(function () {
       getCourse();
+      getUnitsStatus();
     });
     var coreUnits = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
       return state.course.units.filter(function (unit) {
@@ -47,6 +50,14 @@ __webpack_require__.r(__webpack_exports__);
         state.course = res.data;
       })["catch"](function (res) {
         alert(res.response.data.message);
+      });
+    };
+
+    var getUnitsStatus = function getUnitsStatus() {
+      getCompletedUnits(state.course_id).then(function (res) {
+        state.completed_units = res.data.data;
+      })["catch"](function (err) {
+        alert(err.response.data.message);
       });
     };
 
@@ -162,7 +173,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       key: index
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(unit.title), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [$setup.state.completed_units.length + 1 > index ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_router_link, {
+      key: 0,
       to: $setup.getUnitViewLink(unit),
       "class": "btn-link text-primary"
     }, {
@@ -174,7 +186,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
     }, 1032
     /* PROPS, DYNAMIC_SLOTS */
-    , ["to"])])]);
+    , ["to"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]);
   }), 128
   /* KEYED_FRAGMENT */
   ))])]), _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.electiveUnits, function (unit, index) {
@@ -187,38 +199,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* KEYED_FRAGMENT */
   ))])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
 }
-
-/***/ }),
-
-/***/ "./resources/js/src/composable/useCourse.js":
-/*!**************************************************!*\
-  !*** ./resources/js/src/composable/useCourse.js ***!
-  \**************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function () {
-  var all = function all(per_page, search) {
-    return axios__WEBPACK_IMPORTED_MODULE_0___default().get("course");
-  };
-
-  var getWithUnits = function getWithUnits(id) {
-    var role = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "admin";
-    if (role == "admin") role = "";
-    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(role + "/course/".concat(id, "/units"));
-  };
-
-  return {
-    all: all,
-    getWithUnits: getWithUnits
-  };
-});
 
 /***/ }),
 
