@@ -19,6 +19,8 @@ class CreateUnitTopicsTable extends Migration
             $table->unsignedBigInteger('subject_id');
             $table->tinyInteger('order');
             $table->longText('description');
+            $table->longText('attachments')->nullable();
+            $table->boolean('can_user_submit')->default(false);
 
             $table->foreign('subject_id')
                 ->references('id')
@@ -42,6 +44,6 @@ class CreateUnitTopicsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('topics');
+        Schema::dropIfExists('unit_topics');
     }
 }

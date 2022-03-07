@@ -16,6 +16,31 @@
                       class="form-control"
                       v-model="state.form.topic_1"
                     ></textarea>
+                    <label>
+                      <input
+                        type="checkbox"
+                        v-model="state.form.topic_1_user_submission"
+                        :checked="state.form.topic_1_user_submission"
+                      />
+                      Can user submit any file?
+                    </label>
+                    <div>
+                      <input
+                        type="file"
+                        class="form-control"
+                        @change="addFile($event, 1)"
+                      />
+                    </div>
+                    <div>
+                      <ul>
+                        <li
+                          v-for="(attachment, index) in state.files[1]"
+                          :key="index"
+                        >
+                          {{ attachment.file_name }}
+                        </li>
+                      </ul>
+                    </div>
                     <small
                       class="text-danger"
                       v-if="
@@ -35,6 +60,31 @@
                       class="form-control"
                       v-model="state.form.topic_2"
                     ></textarea>
+                    <label>
+                      <input
+                        type="checkbox"
+                        v-model="state.form.topic_2_user_submission"
+                        :checked="state.form.topic_2_user_submission"
+                      />
+                      Can user submit any file?
+                    </label>
+                    <div>
+                      <input
+                        type="file"
+                        class="form-control"
+                        @change="addFile($event, 2)"
+                      />
+                    </div>
+                    <div>
+                      <ul>
+                        <li
+                          v-for="(attachment, index) in state.files[2]"
+                          :key="index"
+                        >
+                          {{ attachment.file_name }}
+                        </li>
+                      </ul>
+                    </div>
                     <small
                       class="text-danger"
                       v-if="
@@ -54,6 +104,31 @@
                       class="form-control"
                       v-model="state.form.topic_3"
                     ></textarea>
+                    <label>
+                      <input
+                        type="checkbox"
+                        v-model="state.form.topic_3_user_submission"
+                        :checked="state.form.topic_3_user_submission"
+                      />
+                      Can user submit any file?
+                    </label>
+                    <div>
+                      <input
+                        type="file"
+                        class="form-control"
+                        @change="addFile($event, 3)"
+                      />
+                    </div>
+                    <div>
+                      <ul>
+                        <li
+                          v-for="(attachment, index) in state.files[3]"
+                          :key="index"
+                        >
+                          {{ attachment.file_name }}
+                        </li>
+                      </ul>
+                    </div>
                     <small
                       class="text-danger"
                       v-if="
@@ -73,6 +148,31 @@
                       class="form-control"
                       v-model="state.form.topic_4"
                     ></textarea>
+                    <label>
+                      <input
+                        type="checkbox"
+                        v-model="state.form.topic_4_user_submission"
+                        :checked="state.form.topic_4_user_submission"
+                      />
+                      Can user submit any file?
+                    </label>
+                    <div>
+                      <input
+                        type="file"
+                        class="form-control"
+                        @change="addFile($event, 4)"
+                      />
+                    </div>
+                    <div>
+                      <ul>
+                        <li
+                          v-for="(attachment, index) in state.files[4]"
+                          :key="index"
+                        >
+                          {{ attachment.file_name }}
+                        </li>
+                      </ul>
+                    </div>
                     <small
                       class="text-danger"
                       v-if="
@@ -92,6 +192,31 @@
                       class="form-control"
                       v-model="state.form.topic_5"
                     ></textarea>
+                    <label>
+                      <input
+                        type="checkbox"
+                        v-model="state.form.topic_5_user_submission"
+                        :checked="state.form.topic_5_user_submission"
+                      />
+                      Can user submit any file?
+                    </label>
+                    <div>
+                      <input
+                        type="file"
+                        class="form-control"
+                        @change="addFile($event, 5)"
+                      />
+                    </div>
+                    <div>
+                      <ul>
+                        <li
+                          v-for="(attachment, index) in state.files[5]"
+                          :key="index"
+                        >
+                          {{ attachment.file_name }}
+                        </li>
+                      </ul>
+                    </div>
                     <small
                       class="text-danger"
                       v-if="
@@ -138,6 +263,25 @@ export default {
         topic_3: "",
         topic_4: "",
         topic_5: "",
+        topic_1_user_submission: "",
+        topic_2_user_submission: "",
+        topic_3_user_submission: "",
+        topic_4_user_submission: "",
+        topic_5_user_submission: "",
+        topic_files: {
+          1: [],
+          2: [],
+          3: [],
+          4: [],
+          5: [],
+        },
+      },
+      files: {
+        1: [],
+        2: [],
+        3: [],
+        4: [],
+        5: [],
       },
       validation: {
         errors: [],
@@ -162,6 +306,18 @@ export default {
           state.form.topic_3 = res.data.data[2].description;
           state.form.topic_4 = res.data.data[3].description;
           state.form.topic_5 = res.data.data[4].description;
+
+          state.form.topic_1_user_submission = res.data.data[0].can_user_submit;
+          state.form.topic_2_user_submission = res.data.data[1].can_user_submit;
+          state.form.topic_3_user_submission = res.data.data[2].can_user_submit;
+          state.form.topic_4_user_submission = res.data.data[3].can_user_submit;
+          state.form.topic_5_user_submission = res.data.data[4].can_user_submit;
+
+          state.files[1] = res.data.data[0].attachments;
+          state.files[2] = res.data.data[1].attachments;
+          state.files[3] = res.data.data[2].attachments;
+          state.files[4] = res.data.data[3].attachments;
+          state.files[5] = res.data.data[4].attachments;
         }
       });
     };
@@ -195,10 +351,27 @@ export default {
       router.back();
     };
 
+    const addFile = (e, topic_no) => {
+      let files = e.target.files || e.dataTransfer.files;
+      if (!files.length) return;
+      let file = files[0];
+      let file_name = file.name;
+
+      let reader = new FileReader();
+      reader.onload = (e) => {
+        state.form.topic_files[topic_no].push({
+          name: file_name,
+          file: e.target.result,
+        });
+      };
+      reader.readAsDataURL(file);
+    };
+
     return {
       state,
       handleFormSubmit,
       goBack,
+      addFile,
     };
   },
 };

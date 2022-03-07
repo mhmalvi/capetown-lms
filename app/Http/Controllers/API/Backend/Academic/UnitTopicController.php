@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Backend\Academic;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Academic\UnitTopicSaveRequest;
+use App\Http\Resources\Academic\UnitTopicResource;
 use App\Models\Academic\Subject;
 
 class UnitTopicController extends Controller
@@ -16,9 +17,7 @@ class UnitTopicController extends Controller
                 'data'    => [],
             ], 200);
         }
-        return response()->json([
-            'data' => $subject->topics
-        ], 200);
+        return UnitTopicResource::collection($subject->topics);
     }
 
     public function store(Subject $subject, UnitTopicSaveRequest $request)
