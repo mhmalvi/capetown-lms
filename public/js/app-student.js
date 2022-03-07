@@ -20601,7 +20601,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 
-(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.baseURL) = window.location.origin + '/api';
+(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.baseURL) = window.location.origin + "/api";
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
   state: {
     user: null
@@ -20609,32 +20609,32 @@ __webpack_require__.r(__webpack_exports__);
   mutations: {
     setUserData: function setUserData(state, userData) {
       state.user = userData;
-      localStorage.setItem('user', JSON.stringify(userData));
+      localStorage.setItem("user", JSON.stringify(userData));
       (axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.headers.common.Authorization) = "Bearer ".concat(userData.token);
     },
     clearUserData: function clearUserData() {
-      localStorage.removeItem('user');
+      localStorage.removeItem("user");
       location.reload();
     }
   },
   actions: {
     signIn: function signIn(_ref, credentials) {
       var commit = _ref.commit;
-      return axios__WEBPACK_IMPORTED_MODULE_0___default().post('/login', credentials).then(function (_ref2) {
+      return axios__WEBPACK_IMPORTED_MODULE_0___default().post("/login", credentials).then(function (_ref2) {
         var data = _ref2.data;
-        commit('setUserData', data);
+        commit("setUserData", data);
         var user = data.user;
-        console.log('data.user', data);
+        console.log("data.user", data);
 
-        if (data.status == true) {
-          window.location.href = window.location.origin + '/admin';
+        if (data.status == true && user.type != "guest") {
+          window.location.href = window.location.origin + "/" + data.type;
         }
       });
     },
     signOut: function signOut(_ref3, userData) {
       var commit = _ref3.commit;
-      commit('clearUserData');
-      return axios__WEBPACK_IMPORTED_MODULE_0___default().post('/signout', userData).then(function (res) {});
+      commit("clearUserData");
+      return axios__WEBPACK_IMPORTED_MODULE_0___default().post("/signout", userData).then(function (res) {});
     }
   },
   getters: {

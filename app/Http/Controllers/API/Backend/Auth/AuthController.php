@@ -11,7 +11,7 @@ class AuthController extends Controller
 {
     public function signIn(Request $request)
     {
-        
+
         // return $request->all();
         $user = $request->validate([
             'email'             => 'required|email',
@@ -19,25 +19,25 @@ class AuthController extends Controller
         ]);
 
 
-         $credential = Auth::attempt($request->only('email', 'password'));
+        $credential = Auth::attempt($request->only('email', 'password'));
 
-       if($credential){
+        if ($credential) {
 
-        $user = Auth::user();
-        $token = $user->createToken('vehicle-inventory')->plainTextToken;
+            $user = Auth::user();
+            $token = $user->createToken('vehicle-inventory')->plainTextToken;
 
-        $response = [
-            'user'              => $user,
-            'token'             => $token,
-            'status'            => true,
-            'message'           => 'Sign In successful!'
-        ];
+            $response = [
+                'user'              => $user,
+                'token'             => $token,
+                'status'            => true,
+                'type'              => $user->user_type,
+                'message'           => 'Sign In successful!'
+            ];
 
-        // User::find(Auth::user()->id)->update(['is_online' => 1]);
+            // User::find(Auth::user()->id)->update(['is_online' => 1]);
 
-        return response($response, 201);
-
-       } else {
+            return response($response, 201);
+        } else {
 
             // if (! $user || ! Hash::check($request->password, $user->password)) {
 
@@ -57,11 +57,8 @@ class AuthController extends Controller
                     'status'  => false
                 ], 404
             ]);
-
-       }
-    
-        
-    } 
+        }
+    }
 
     public function signUp(Request $request)
     {
@@ -80,13 +77,12 @@ class AuthController extends Controller
         //    return response()->json($validator->errors(), 422);
         // }
 
-        $user =  User::create($request->all()); 
+        $user =  User::create($request->all());
 
         return response()->json([
             'status' => true,
             'message' => 'Registration Success!'
-            ]); 
-
+        ]);
     }
 
     public function signOut()
