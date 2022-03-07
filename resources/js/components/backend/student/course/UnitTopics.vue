@@ -19,7 +19,21 @@
             <tr v-for="(topic, index) in state.unit.topics" :key="index">
               <td>{{ getTopicName(topic.order) }}</td>
               <td>
-                <input type="file" class="form-control" />
+                <p v-html="topic.description"></p>
+                <input
+                  type="file"
+                  class="form-control"
+                  v-if="topic.can_user_submit"
+                />
+                <div>
+                  <a
+                    href="#"
+                    v-for="(attachment, index) in topic.attachments"
+                    :key="index"
+                  >
+                    {{ attachment.file_name }}
+                  </a>
+                </div>
               </td>
             </tr>
           </tbody>

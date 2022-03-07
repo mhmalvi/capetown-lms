@@ -55,6 +55,16 @@
           <tbody>
             <tr v-for="(unit, index) in electiveUnits" :key="index">
               <td>{{ unit.title }}</td>
+              <td>
+                <router-link
+                  :to="getUnitViewLink(unit)"
+                  class="btn-link text-primary"
+                  v-if="
+                    state.completed_units.length - coreUnits.length + 1 > index
+                  "
+                  >View</router-link
+                >
+              </td>
             </tr>
           </tbody>
         </table>
