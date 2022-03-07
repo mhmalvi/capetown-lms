@@ -22,7 +22,7 @@ class CourseResource extends JsonResource
             'title'              => $this->title,
             'slug'               => $this->slug,
             'course_category_id' => $this->course_category_id,
-            'course_category_name' => $this->courseCategory->name??'', 
+            'course_category_name' => $this->courseCategory->name ?? '',
             'description'        => $this->description,
             'thumbnail'          => $this->thumbnail,
             'thumbnail_view'          => ImageCustomize::customize('course', $this->thumbnail),
