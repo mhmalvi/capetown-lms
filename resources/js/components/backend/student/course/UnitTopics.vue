@@ -13,13 +13,33 @@
     <div v-else>
       <h2>{{ state.unit.title }} - Topics</h2>
 
-      <div class="row" v-for="(topic, index) in state.unit.topics" :key="index">
-        <div
-          class="card col-md-12"
-          v-if="index < state.completed_topics.length + 1"
+      <ul class="nav nav-tabs">
+        <li
+          class="nav-item"
+          v-for="(topic, index) in state.unit.topics"
+          :key="index"
         >
-          <h2 class="card-header">{{ getTopicName(topic.order) }}</h2>
+          <a
+            class="nav-link"
+            aria-current="page"
+            href="#"
+            :class="{
+              active: state.activeTopic === index,
+              disabled: index > state.completed_topics.length,
+            }"
+            @click="state.activeTopic = index"
+            >{{ getTopicName(topic.order) }}</a
+          >
+        </li>
+      </ul>
 
+      <!-- -->
+      <div
+        class="row mt-3"
+        v-for="(topic, index) in state.unit.topics"
+        :key="index"
+      >
+        <div class="card col-md-12" v-if="state.activeTopic === index">
           <div class="card-body">
             <p v-html="topic.description"></p>
 
@@ -31,11 +51,11 @@
 
             <input
               type="file"
-              class="form-control"
+              class="form-control my-2"
               v-if="topic.can_user_submit"
               @change.prevent="handleFileChange($event, index)"
             />
-            <div>
+            <div class="my-2">
               <a
                 :href="getFileUrl(attachment)"
                 v-for="(attachment, index) in topic.attachments"
@@ -84,6 +104,7 @@ export default {
       topics: [],
       loading: false,
       completed_topics: [],
+      activeTopic: 0,
     });
 
     onMounted(() => {
@@ -191,3 +212,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.nav-tabs .nav-link.active {
+  background: #ffffff;
+}
+</style>
