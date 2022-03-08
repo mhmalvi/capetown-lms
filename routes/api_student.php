@@ -27,4 +27,6 @@ Route::group(['prefix' => 'student', 'namespace' => 'API\Backend\Student', 'midd
     Route::get('course/{course}/units/completed', 'CourseController@completed_units');
 
     Route::get('unit/{unit}', 'UnitController@topics');
+    Route::get('unit/{unit}/topics/completed', 'UnitController@completedTopics');
+    Route::post('unit/{unit}/topics/{topic}/submit', 'UnitController@submitTopic');
 });

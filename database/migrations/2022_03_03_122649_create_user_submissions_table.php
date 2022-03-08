@@ -30,9 +30,10 @@ class CreateUserSubmissionsTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-            $table->string('assessment');
+            $table->longText('assessment')->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected'])
                 ->default('pending');
+            $table->text('attachments')->nullable();
 
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
