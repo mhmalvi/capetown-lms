@@ -1,6 +1,8 @@
 <!-- repo-card -->
 ![capetown-lms](docs/assets/social-card.png)
 
+![capetown-lms — architecture](docs/assets/architecture.png)
+
 # Cape Town LMS
 
 A full-featured Learning Management System built for the **University of Cape Town (UCT)**, providing a modern SPA-driven platform for academic course delivery, classroom management, and student engagement.
